@@ -1,0 +1,9 @@
+[submodule "micropython"]
+	path = micropython
+	url = https://github.com/micropython/micropython.git
+[submodule "ghdl"]
+	path = ghdl
+	url = https://github.com/ghdl/ghdl.git
+[submodule "microwatt"]
+	path = microwatt
+	url = https://github.com/Joel-Dandin/microwatt.git
