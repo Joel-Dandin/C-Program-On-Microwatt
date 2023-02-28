@@ -122,6 +122,84 @@ cd ..
 ./core_tb > /dev/null
 ```
 
+
+## Compile Latest Versions
+
+Create a new directory
+```
+mkdir /home/$USER/uwatt
+cd /home/$USER/uwatt
+```
+Download PowerPC cross-toolchain
+
+```
+wget https://toolchains.bootlin.com/downloads/releases/toolchains/powerpc64le-power8/tarballs/powerpc64le-power8--glibc--stable-2022.08-1.tar.bz2
+
+tar -xvf powerpc64le-power8--glibc--stable-2022.08-1.tar.bz2
+
+export PATH=$PATH:/home/$USER/uwatt/powerpc64le-power8--glibc--stable-2022.08-1/bin
+
+export CROSS_COMPILE=powerpc64le-linux-
+```
+
+Build Micropython
+```
+git clone https://github.com/micropython/micropython.git
+cd micropython/ports/powerpc
+sudo apt install make
+make -j$(nproc)
+cd ../../../
+```
+
+Build GHDL from source
+```
+sudo apt install llvm clang gnat zlib1g-dev
+```
+
+Install gnat4.9 packages (needed by GHDL):
+```
+wget http://archive.ubuntu.com/ubuntu/pool/universe/g/gnat-4.9/gnat-4.9-base_4.9.3-3ubuntu5_amd64.deb
+wget http://archive.ubuntu.com/ubuntu/pool/universe/g/gnat-4.9/libgnat-4.9_4.9.3-3ubuntu5_amd64.deb
+sudo dpkg -i ./gnat-4.9-base_4.9.3-3ubuntu5_amd64.deb
+sudo dpkg -i ./libgnat-4.9_4.9.3-3ubuntu5_amd64.deb
+```
+
+Clone GHDL from GitHub
+```
+git clone https://github.com/ghdl/ghdl.git
+cd ghdl
+mkdir -p /home/$USER/uwatt/ghdl_build
+mkdir build && cd build
+../configure --with-llvm-config --prefix=/home/$USER/uwatt/ghdl_build
+make
+make install
+cd ../../
+```
+
+After building, add ghdl to the path with
+```
+export PATH=$PATH:/home/$USER/uwatt/ghdl_build/bin
+```
+
+Build Microwatt!
+```
+git clone https://github.com/Joel-Dandin/microwatt.git
+cd microwatt
+make
+```
+
+Link Micropython image
+```
+ln -s micropython/firmware.bin main_ram.bin
+```
+
+Run Microwatt!
+```
+./core_tb > /dev/null
+```
+
+
+
 # Video
 <a href="https://asciinema.org/a/364414" target="_blank"><img src="https://asciinema.org/a/364414.svg" /></a>
 
