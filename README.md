@@ -198,7 +198,20 @@ Run Microwatt!
 ./core_tb > /dev/null
 ```
 
+# Run code on FPGA
+Create Hex file to run on FPGA
+```
+cd uwatt/microwatt
+ln -s micropython/firmware.bin main_ram.bin
+cd hello_world
+make clean
+make FILE=joel_test
+```
 
+To flash the hex file to the FPGA use fusesoc
+```
+fusesoc run --target=nexys_a7 microwatt --ram_init_file=/home/aip/dwatt/microwatt/micropython/firmware.hex
+```
 
 # Video
 <a href="https://asciinema.org/a/364414" target="_blank"><img src="https://asciinema.org/a/364414.svg" /></a>
